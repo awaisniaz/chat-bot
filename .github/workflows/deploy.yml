@@ -23,6 +23,12 @@ jobs:
       
       - name: Debug HOST Key
         run: echo "${{ secrets.EC2_HOST }}"
+      
+      - name: Debug Secrets
+        run: |
+        echo "EC2_KEY length: ${#EC2_KEY}"
+        env:
+          EC2_KEY: ${{ secrets.EC2_KEY }}
 
       - name: Deploy to EC2
         run: |
