@@ -1,0 +1,31 @@
+name: Deploy to EC2
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up SSH Key
+        run: |
+          echo "${{ secrets.EC2_KEY }}" > private_key.pem
+          chmod 600 private_key.pem
+
+      - name: Deploy to EC2
+        run: |
+          ssh -o StrictHostKeyChecking=no -i private_key.pem ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
+            cd /home/ubuntu/app || mkdir /home/ubuntu/app && cd /home/ubuntu/app
+            git clone https://github.com/awaisniaz/chat-bot.git || (cd chat-bot && git pull)
+            cd chat-bot
+            yarn install
+            pm2 restart all || pm2 start server.js --chat-bot
+            pm2 save
+            exit
+          EOF

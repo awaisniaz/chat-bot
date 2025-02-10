@@ -1,0 +1,17 @@
+version:'3.8'
+services:
+  app: 
+   environment:
+     - PORT=${PORT}
+     - DB_HOST=${DB_HOST}
+   build: .
+   ports:
+    - "3008:3005"
+   depends_on:
+    - db
+  db:
+    image: mydata
+    volumes:
+      - mongo-data:/data/db
+volumes:
+  mongo-data:
