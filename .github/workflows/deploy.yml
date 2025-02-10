@@ -17,6 +17,9 @@ jobs:
         run: |
           echo "${{ secrets.EC2_KEY }}" > private_key.pem
           chmod 600 private_key.pem
+          
+      - name: Debug SSH Key
+        run: echo "${{ secrets.EC2_KEY }}"
 
       - name: Deploy to EC2
         run: |
