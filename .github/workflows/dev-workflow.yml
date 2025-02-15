@@ -1,0 +1,7 @@
+# .github/workflow/dev-workflow.yml
+
+name: Github Action Template
+on : 
+ push:
+ branches: [ main ]
+ 
